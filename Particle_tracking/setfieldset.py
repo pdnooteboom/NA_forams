@@ -35,8 +35,8 @@ def set_the_ML_fieldset(ufiles, bfile):
                   'U':{'lon': 'U_LON_2D', 'lat': 'U_LAT_2D', 'depth': 'w_dep','time':'time'},#
                   'V':{'lon': 'U_LON_2D', 'lat': 'U_LAT_2D', 'depth': 'w_dep','time':'time'},#
                   'W':{'lon': 'U_LON_2D', 'lat': 'U_LAT_2D', 'depth': 'w_dep','time':'time'},#
-                  'T':{'lon': 'U_LON_2D', 'lat': 'U_LAT_2D', 'time':'time'},#
-                  'S':{'lon': 'U_LON_2D', 'lat': 'U_LAT_2D', 'time':'time'}}
+                  'T':{'lon': 'U_LON_2D', 'lat': 'U_LAT_2D', 'depth': 'w_dep', 'time':'time'},#
+                  'S':{'lon': 'U_LON_2D', 'lat': 'U_LAT_2D', 'depth': 'w_dep', 'time':'time'}}
 
     indices = {'lat':range(1300,2280), 'lon':range(0,1000)}
 
@@ -99,8 +99,8 @@ def set_the_fieldset(ufiles, bfile):
                   'U':{'lon': 'U_LON_2D', 'lat': 'U_LAT_2D', 'depth': 'w_dep','time':'time'},#
                   'V':{'lon': 'U_LON_2D', 'lat': 'U_LAT_2D', 'depth': 'w_dep','time':'time'},#
                   'W':{'lon': 'U_LON_2D', 'lat': 'U_LAT_2D', 'depth': 'w_dep','time':'time'},#
-                  'T':{'lon': 'U_LON_2D', 'lat': 'U_LAT_2D', 'time':'time'},#
-                  'S':{'lon': 'U_LON_2D', 'lat': 'U_LAT_2D', 'time':'time'}}
+                  'T':{'lon': 'U_LON_2D', 'lat': 'U_LAT_2D', 'depth': 'w_dep', 'time':'time'},#
+                  'S':{'lon': 'U_LON_2D', 'lat': 'U_LAT_2D', 'depth': 'w_dep', 'time':'time'}}
 
     indices = {'lat':range(1300,2280), 'lon':range(0,1000)}
 

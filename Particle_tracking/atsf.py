@@ -35,7 +35,7 @@ dirwrite = 'output/'
 # The 38Ma paleolocation of U1411
 lonCOR = 25 # correction for longitude
 latlon = [33.02928823, -34.88303588]
-gs = 7 # Grid size
+gs = 2#7 # Grid size
 lonsz, latsz = np.mgrid[-gs:gs, -gs:gs]
 lonsz = lonsz.flatten() + latlon[1]; latsz = latsz.flatten() + latlon[0];
 lonsz -= lonCOR
@@ -44,7 +44,7 @@ print('amount of releas locations: ', len(latsz))
 assert ~(np.isnan(latsz)).any(), 'locations should not contain any NaN values'
 dep = dd * np.ones(latsz.shape)
 
-times = np.array([datetime(2009, 12, 30) - delta(days=x) for x in range(0,2*int(365),5)])
+times = np.array([datetime(2009, 12, 30) - delta(days=x) for x in range(0,2*int(365),5)])[:2]
 time = np.empty(shape=(0));lons = np.empty(shape=(0));lats = np.empty(shape=(0));
 for i in range(len(times)):
     lons = np.append(lons,lonsz)
@@ -90,6 +90,6 @@ def run_particles(dirwrite,outfile,lonss,latss,dep):
 
     print('Execution finished')
 
-outfile = 'Forams_dd'+str(int(dd)) +'_sp'+str(int(sp)) + '_%s'%(config)
+outfile = 'o2/Forams_dd'+str(int(dd)) +'_sp'+str(int(sp)) + '_%s'%(config)
 run_particles(dirwrite,outfile,lons,lats,dep)
 
