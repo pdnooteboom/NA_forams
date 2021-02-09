@@ -28,7 +28,7 @@ def mycolormap():
     # sample the colormaps that you want to use. Use 128 from each so we get 256
     # colors in total
     colors2 = cm.deep(np.linspace(0., 1, 128))
-    colors1 = plt.cm.Greys(np.linspace(0, 1, 128))[80:82]
+    colors1 = plt.cm.Greys(np.linspace(0, 1, 128))[100:102]
 
     # combine them and build a new colormap
     colors = np.vstack((colors1, colors2))
@@ -53,13 +53,13 @@ dd = 10
 projection = ccrs.PlateCarree(0)
 exte = [1, 360, -75, -10]
 cmap = mycolormap()
-vsbath = [-0.05,6]
+vsbath = [-0.08,6]
 rr = 1 # determines the resolution reduction for the plotting
 contours = [-5e-5,-3e-5,-2e-5,-1e-5,0,1e-5, 2E-5, 3E-5, 5E-5]#[0,1.25E-5, 2E-5, 2.5E-5, 3E-5,3.75E-5, 5E-5]
 #%% Load files
-minlat = -80
-maxlat = 80
-minlat38 = -78
+minlat = -84
+maxlat = 84
+minlat38 = -84
 dirRead = '/Users/nooteboom/Documents/PhD/Eocene_POP/OUPUT/gridf/'
 # Load 38MA
 nc38 = Dataset(dirRead + 'kmt_tx0.1_POP_EO38_poleland.nc')
@@ -104,9 +104,18 @@ im2 = plt.pcolormesh(lons38[::rr,::rr], lats38[::rr,::rr], bath38[::rr,::rr], cm
 ax2.scatter(paleolons,paleolats, marker='+', s=1000, color='red', 
             zorder=3000)
 
+tc = 'k'
+bb =dict(facecolor='white', alpha=0.8)
 for tx in range(len(paleolonstext)):
-    ax2.text(paleolonstext[tx]+1,paleolats[tx]+1, sitenames[tx], fontsize=15,
-             horizontalalignment='left', color='red')
+    if sitenames[tx] in ['U1404','925']:
+        ax2.text(paleolonstext[tx]+4,paleolats[tx]-8, sitenames[tx], fontsize=15,
+             horizontalalignment='left', color=tc, bbox=bb)    
+    elif sitenames[tx] in ['SSQ']:   
+        ax2.text(paleolonstext[tx]-15,paleolats[tx]-8, sitenames[tx], fontsize=15,
+             horizontalalignment='left', color=tc, bbox=bb)    
+    else:
+        ax2.text(paleolonstext[tx]+4,paleolats[tx]+4, sitenames[tx], fontsize=15,
+             horizontalalignment='left', color=tc, bbox=bb)
 
 #%% final
 fig.subplots_adjust(right=0.95)
