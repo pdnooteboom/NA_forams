@@ -37,9 +37,7 @@ def mycolormap():
 #%% load sediment sample site locations
 ff = np.load('paleolocs_38Ma.npz')
 paleolons = ff['longitudes'] 
-paleolonstext = copy(paleolons)# + 180
-#paleolonstext[paleolonstext>360] -= 720
-#paleolons[paleolons<180] += 180
+paleolonstext = copy(paleolons)
 paleolats = ff['latitudes']
 sitenames = ff['names']
 #%%
@@ -53,7 +51,6 @@ matplotlib.rc('font', **font)
 sp = 6
 dd = 10
 projection = ccrs.PlateCarree(0)
-#exte = [1, 360, -74, 81]
 exte = [1, 360, -75, -10]
 cmap = mycolormap()
 vsbath = [-0.05,6]
@@ -63,26 +60,7 @@ contours = [-5e-5,-3e-5,-2e-5,-1e-5,0,1e-5, 2E-5, 3E-5, 5E-5]#[0,1.25E-5, 2E-5, 
 minlat = -80
 maxlat = 80
 minlat38 = -78
-
-# Load PD
 dirRead = '/Users/nooteboom/Documents/PhD/Eocene_POP/OUPUT/gridf/'
-#ncPD = Dataset(dirRead + 'bathymetry_POP_0.1res.nc')
-ncPDgrid = Dataset(dirRead + 'grid_coordinates_pop_tx0.1.nc')
-latsPD = ncPDgrid['U_LAT_2D'][:]
-lonsPD = ncPDgrid['U_LON_2D'][:]
-minlon = np.min(lonsPD)
-maxlon = np.max(lonsPD)
-extePD = [minlon, maxlon, minlat, maxlat]
-idx = np.where(np.logical_and(latsPD[:,0]>=minlat, latsPD[:,0]<=maxlat))
-
-bathPD = (ncPDgrid['BOT_DEP'][:] / 1000)[idx[0]]
-bathPD_smooth = copy(bathPD)
-bathPD_smooth[bathPD_smooth.mask] = 0
-bathPD_smooth = gaussian_filter(bathPD_smooth, 7)
-fHPD = (-2 * 7.2921 * 10**(-5) * np.sin(latsPD[idx[0]]*np.pi/180) / bathPD_smooth)
-latsPD = latsPD[idx[0]]
-lonsPD = lonsPD[idx[0]]
-
 # Load 38MA
 nc38 = Dataset(dirRead + 'kmt_tx0.1_POP_EO38_poleland.nc')
 nc38grid = Dataset(dirRead + 'grid_coordinates_pop_tx0.1_38ma.nc')
@@ -118,21 +96,17 @@ g.xformatter = LONGITUDE_FORMATTER
 g.yformatter = LATITUDE_FORMATTER
 g.ylocator = mticker.FixedLocator(latticks)
 ax2.set_extent(exte38, ccrs.PlateCarree())
-#ax2.set_xticks([0., 90., 180., 270.], crs=ccrs.PlateCarree())
-#ax2.set_xticklabels(['0$^{\circ}$E', '90$^{\circ}$E', 
-#                     '180$^{\circ}$E', '270$^{\circ}$E'], fontsize=fs)
 
 im2 = plt.pcolormesh(lons38[::rr,::rr], lats38[::rr,::rr], bath38[::rr,::rr], cmap=cmap, 
                      vmin=vsbath[0], vmax=vsbath[1],
                      transform=ccrs.PlateCarree()
                      )
 ax2.scatter(paleolons,paleolats, marker='+', s=1000, color='red', 
-            zorder=3000)#,transform=ccrs.PlateCarree())
+            zorder=3000)
 
 for tx in range(len(paleolonstext)):
     ax2.text(paleolonstext[tx]+1,paleolats[tx]+1, sitenames[tx], fontsize=15,
-             horizontalalignment='left', color='red')#,
-#             transform=ccrs.PlateCarree())
+             horizontalalignment='left', color='red')
 
 #%% final
 fig.subplots_adjust(right=0.95)
