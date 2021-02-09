@@ -109,13 +109,13 @@ bb =dict(facecolor='white', alpha=0.8)
 for tx in range(len(paleolonstext)):
     if sitenames[tx] in ['U1404','925']:
         ax2.text(paleolonstext[tx]+4,paleolats[tx]-8, sitenames[tx], fontsize=15,
-             horizontalalignment='left', color=tc, bbox=bb)    
+             horizontalalignment='left', color=tc, bbox=bb, zorder=3001)    
     elif sitenames[tx] in ['SSQ']:   
         ax2.text(paleolonstext[tx]-15,paleolats[tx]-8, sitenames[tx], fontsize=15,
-             horizontalalignment='left', color=tc, bbox=bb)    
+             horizontalalignment='left', color=tc, bbox=bb, zorder=3001)    
     else:
         ax2.text(paleolonstext[tx]+4,paleolats[tx]+4, sitenames[tx], fontsize=15,
-             horizontalalignment='left', color=tc, bbox=bb)
+             horizontalalignment='left', color=tc, bbox=bb,zorder=3001)
 
 #%% final
 fig.subplots_adjust(right=0.95)
