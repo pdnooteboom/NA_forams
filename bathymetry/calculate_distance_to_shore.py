@@ -30,17 +30,25 @@ def distance(lon1, lat1, lon2, lat2):
     return R * c  # in km
     
 @jit(nopython=True)
-def calculate_distance(loc, lons, lats):
+def calculate_distance(loc, lons, lats, bath):
     assert len(loc)==2, 'loc is a list which should contain the longitude and latitude of one location'
     assert len(lons.shape)==len(lats.shape)
     assert len(lats.shape)==1
 
     sd = 10**10
+    sd2 = 10**10
+    bath0 = np.nan
     for i in range(len(lons)):
-        dis = distance(loc[0], loc[1], lons[i], lats[i])
-        if(dis<sd):
-            sd = dis
-    return sd # in km
+        if(bath[i]<0):
+            dis = distance(loc[0], loc[1], lons[i], lats[i])
+            if(dis<sd):
+                sd = dis
+        else:
+            dis = distance(loc[0], loc[1], lons[i], lats[i])
+            if(dis<sd2):
+                sd2 = dis
+                bath0 = bath[i]   
+    return sd, bath0 # in km
 
 #%% load sediment sample site locations
 ff = np.load('paleolocs_38Ma.npz')
@@ -69,17 +77,20 @@ lats38 = lats38[idx[0]]
 lons38 = lons38[idx[0]]
 #%%
 shortestdistances= []
-idx = np.where(bath38<0)
+baths= []
+#idx = np.where(bath38<0)
 for j in range(len(paleolons)):
     lo = paleolons[j]
     la = paleolats[j]
-    shortestdistances.append(calculate_distance([lo, la], 
-                                                lons38[idx].flatten(),
-                                                lats38[idx].flatten()))
+    dis, ba = calculate_distance([lo, la], 
+                                lons38.flatten(),
+                                lats38.flatten(), bath38.data.flatten())
+    shortestdistances.append(dis)
+    baths.append(ba)
 #%% write as csv
-df = pd.DataFrame(np.array([paleolons.tolist(), paleolats.tolist(), 
-                            sitenames.tolist(), shortestdistances]),
+df = pd.DataFrame(np.swapaxes(np.array([paleolons.tolist(), paleolats.tolist(), 
+                            sitenames.tolist(), shortestdistances, baths]),0,1),
                    columns=['paleolongitudes', 'paleolatitudes', 'names',
-                            'shortest distance to land (km)'])
-
+                            'shortest distance to land (km)', 'paleobathymetry (km)'])
+df.to_csv('shortest_distances.csv')
     
